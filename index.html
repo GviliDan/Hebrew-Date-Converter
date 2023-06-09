@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Hebrew Date Converter</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+
+<body>
+  <h1>Hebrew Date Converter</h1>
+  <form id="dateForm">
+    <label for="foreignDate">Enter a foreign date:</label>
+    <input type="date" id="foreignDate" required>
+    <button type="submit">Convert</button>
+  </form>
+
+  <div id="resultContainer">
+    <h2>Converted Hebrew Date:</h2>
+    <p id="hebrewDate"></p>
+    <p id="wittySentence" class="witty-sentence"></p>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    const form = document.getElementById('dateForm');
+    const foreignDateInput = document.getElementById('foreignDate');
+    const resultContainer = document.getElementById('resultContainer');
+    const hebrewDateElement = document.getElementById('hebrewDate');
+    const wittySentenceElement = document.getElementById('wittySentence');
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const foreignDate = foreignDateInput.value;
+      convertDate(foreignDate);
+    });
+
+    function convertDate(foreignDate) {
+      const url = `https://www.hebcal.com/converter?cfg=json&date=${foreignDate}&g2h=1&strict=1`;
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          const hebrewDate = data.hebrew;
+          hebrewDateElement.textContent = hebrewDate;
+          resultContainer.style.display = 'block';
+          const wittySentences = [
+            "Mazel tov! Your conversion skills are on fire!",
+            "You're nailing this Hebrew date conversion!",
+            "Wow, you're a Hebrew date conversion master!",
+            "Impressive! Your conversion game is strong.",
+            "Keep it up! You're conquering Hebrew dates like a pro!",
+            "Bravo! Your conversion skills are top-notch.",
+            "You're on a roll! Hebrew date conversions are a breeze for you!",
+            "Fantastic job! Your Hebrew date conversion is flawless.",
+            "You've got the magic touch with Hebrew date conversions!",
+            "Well done! Your conversion prowess is unmatched."
+          ];
+          const randomIndex = Math.floor(Math.random() * wittySentences.length);
+          const wittySentence = wittySentences[randomIndex];
+          wittySentenceElement.textContent = wittySentence;
+        })
+        .catch(error => console.error(error));
+    }
+  </script>
+</body>
+
+</html>
